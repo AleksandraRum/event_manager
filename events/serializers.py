@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.utils import timezone
 from rest_framework import serializers
 
-from .models import Event, Registration
+from events.models import Event, Registration
 
 
 class EventListSerializer(serializers.ModelSerializer):

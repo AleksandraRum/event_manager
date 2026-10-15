@@ -4,14 +4,14 @@ from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from .exceptions import RegistrationError
-from .models import Event
-from .serializers import (
+from events.exceptions import RegistrationError
+from events.models import Event
+from events.serializers import (
     EventCreateSerializer,
     EventListSerializer,
     RegistrationSerializer,
 )
-from .services import EventService
+from events.services import EventService
 
 
 class EventViewSet(

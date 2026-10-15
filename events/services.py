@@ -6,10 +6,9 @@ from django.db.models import Avg, BooleanField, Case, Count, F, Q, Value, When
 from django.db.models.functions import Coalesce
 from django.utils import timezone
 
+from events.exceptions import RegistrationError
+from events.models import Event, Registration
 from users.models import User
-
-from .exceptions import RegistrationError
-from .models import Event, Registration
 
 
 class EventService:

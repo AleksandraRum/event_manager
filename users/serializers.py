@@ -1,12 +1,15 @@
 from rest_framework import serializers
 
 from events.serializers import RegistrationSerializer
-
-from .models import User
+from users.models import User
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    registrations = serializers.SerializerMethodField()
+    registrations = RegistrationSerializer(
+        source="latest_registrations",
+        many=True,
+        read_only=True,
+    )
 
     class Meta:
         model = User
@@ -19,7 +22,3 @@ class ProfileSerializer(serializers.ModelSerializer):
             "bonus_balance",
             "registrations",
         ]
-
-    def get_registrations(self, obj):
-        registrations = self.context["registrations"]
-        return RegistrationSerializer(registrations, many=True).data
