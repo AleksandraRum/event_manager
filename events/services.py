@@ -79,7 +79,7 @@ class EventService:
         )
 
         if registration.status == Registration.Status.CANCELED:
-            raise ValueError("Эта регистрацяи уже отменена")
+            raise ValueError("Эта регистрация уже отменена")
 
         if timezone.now() + timedelta(days=2) > registration.event.start_at:
             raise ValueError(
@@ -99,8 +99,10 @@ class EventService:
     @staticmethod
     def get_available_events():
         events = Event.objects.filter(
-            status=Event.Status.PUBLISHED, end_at__gt=timezone.now()
+            status=Event.Status.PUBLISHED,
+            end_at__gt=timezone.now(),
         )
+
         events = events.annotate(
             current_attendees=Count(
                 "registrations",
@@ -109,7 +111,10 @@ class EventService:
                 ),
                 distinct=True,
             ),
-            average_rating=Coalesce(Avg("reviews__rating"), 0.0),
+            average_rating=Coalesce(
+                Avg("reviews__rating"),
+                0.0,
+            ),
             is_full=Case(
                 When(
                     current_attendees__gte=F("max_attendees"),
@@ -120,4 +125,5 @@ class EventService:
                 output_field=BooleanField(),
             ),
         )
+
         return events
